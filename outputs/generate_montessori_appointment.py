@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a professional Science Teacher appointment letter PDF
-for Facilitie De Montessori School (Orlando) addressed to Prabhjot Singh.
-No watermarks. Suitable for professional use."""
+"""Generate Facilitie De Montessori School appointment letter PDF (2024)."""
 
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
@@ -32,18 +30,12 @@ def build_pdf(path: str) -> None:
     c.setFillColor(NAVY)
     c.setFont("Times-Bold", 17)
     c.drawCentredString(width / 2, y, "FACILITIE DE MONTESSORI SCHOOL")
-    y -= 15
-    c.setFont("Times-Italic", 10.5)
+    y -= 16
+    c.setFont("Times-Italic", 11)
     c.setFillColor(ACCENT)
     c.drawCentredString(width / 2, y, "Orlando, Florida")
-    y -= 12
-    c.setFont("Helvetica", 8)
-    c.setFillColor(MUTED)
-    c.drawCentredString(
-        width / 2, y, "Nurturing Independence • Curiosity • Lifelong Learning"
-    )
 
-    y -= 10
+    y -= 12
     c.setStrokeColor(RULE)
     c.setLineWidth(1.1)
     c.line(margin_x, y, width - margin_x, y)
@@ -66,6 +58,8 @@ def build_pdf(path: str) -> None:
         return lines
 
     def draw_para(text, yy, font="Helvetica", size=10, leading=12.5, gap=6):
+        if "\u2014" in text or "\u2013" in text:
+            raise ValueError("Em/en dash found in text")
         c.setFont(font, size)
         c.setFillColor(TEXT)
         for line in wrap(text, font, size):
@@ -73,10 +67,10 @@ def build_pdf(path: str) -> None:
             yy -= leading
         return yy - gap
 
-    y -= 22
+    y -= 24
     c.setFillColor(TEXT)
     c.setFont("Helvetica", 10)
-    c.drawString(margin_x, y, "July 24, 2026")
+    c.drawString(margin_x, y, "August 5, 2024")
 
     y -= 20
     c.setFont("Helvetica-Bold", 10)
@@ -87,7 +81,7 @@ def build_pdf(path: str) -> None:
 
     y -= 18
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(margin_x, y, "Subject: Appointment Letter — Science Teacher")
+    c.drawString(margin_x, y, "Subject: Appointment Letter - Science Teacher")
 
     y -= 18
     c.setFont("Helvetica", 10)
@@ -95,31 +89,27 @@ def build_pdf(path: str) -> None:
     y -= 14
 
     y = draw_para(
-        "We are pleased to formally appoint you to the position of Science Teacher at "
-        "Facilitie De Montessori School, Orlando, effective August 11, 2026. This "
-        "appointment is offered in recognition of your academic preparation, professional "
-        "demeanor, and demonstrated commitment to student-centered learning.",
+        "I am writing to confirm your appointment as Science Teacher at Facilitie De "
+        "Montessori School in Orlando. Your start date is August 19, 2024.",
         y,
         leading=12.2,
         gap=5,
     )
 
     y = draw_para(
-        "In this role, you will design and deliver engaging science instruction aligned "
-        "with Montessori principles and applicable academic standards; cultivate inquiry, "
-        "observation, and hands-on discovery among learners; collaborate with colleagues "
-        "to support an integrated curriculum; maintain clear records of student progress; "
-        "communicate professionally with families; and uphold the school’s standards of "
-        "care, respect, and classroom excellence.",
+        "As Science Teacher, you will plan and teach science lessons for our students, "
+        "keep accurate records of student work and progress, work with other teachers on "
+        "classroom activities, and keep in regular contact with parents. You are also "
+        "expected to follow school policies and help maintain a safe, orderly classroom.",
         y,
         leading=12.2,
         gap=5,
     )
 
     y = draw_para(
-        "Your appointment is offered on a full-time basis for the 2026–2027 academic year, "
-        "subject to the terms summarized below and to any subsequent written agreement "
-        "executed by both parties.",
+        "This is a full-time position for the 2024-2025 school year. The main terms are "
+        "listed below. A separate employment agreement may also be provided for your "
+        "signature.",
         y,
         leading=12.2,
         gap=4,
@@ -127,23 +117,23 @@ def build_pdf(path: str) -> None:
 
     c.setFont("Helvetica-Bold", 10)
     c.setFillColor(NAVY)
-    c.drawString(margin_x, y, "Appointment Particulars")
+    c.drawString(margin_x, y, "Appointment Details")
     y -= 6
     c.setStrokeColor(RULE)
     c.setLineWidth(0.8)
-    c.line(margin_x, y, margin_x + 145, y)
+    c.line(margin_x, y, margin_x + 120, y)
     y -= 13
 
     particulars = [
         ("Position Title", "Science Teacher"),
-        ("Employing Institution", "Facilitie De Montessori School, Orlando"),
-        ("Employment Type", "Full-Time Faculty Appointment"),
-        ("Effective Date", "August 11, 2026"),
-        ("Academic Year", "2026–2027"),
-        ("Reporting To", "Head of School / Academic Director"),
-        ("Work Location", "Facilitie De Montessori School campus, Orlando, Florida"),
-        ("Compensation", "As mutually agreed in writing and confirmed upon acceptance"),
-        ("Probationary Period", "Ninety (90) days from the effective date"),
+        ("School", "Facilitie De Montessori School, Orlando"),
+        ("Employment Type", "Full-Time"),
+        ("Start Date", "August 19, 2024"),
+        ("School Year", "2024-2025"),
+        ("Reports To", "Angelica Casta, Head of School"),
+        ("Work Location", "Orlando, Florida"),
+        ("Compensation", "As agreed in writing upon acceptance"),
+        ("Probation Period", "90 days from the start date"),
     ]
     label_w = 1.75 * inch
     for label, value in particulars:
@@ -157,10 +147,9 @@ def build_pdf(path: str) -> None:
 
     y -= 2
     y = draw_para(
-        "This appointment is contingent upon satisfactory completion of all "
-        "pre-employment requirements applicable to private school faculty in the State "
-        "of Florida, including background screening and verification of credentials as "
-        "required by law and school policy.",
+        "This appointment is subject to completion of the usual pre-employment checks "
+        "required for school staff in Florida, including a background check and "
+        "confirmation of your teaching credentials.",
         y,
         size=9.5,
         leading=12,
@@ -168,10 +157,9 @@ def build_pdf(path: str) -> None:
     )
 
     y = draw_para(
-        "Please signify your acceptance of this appointment by signing and returning one "
-        "copy of this letter no later than August 1, 2026. We look forward to welcoming "
-        "you to our faculty and to the positive contribution you will make to our "
-        "students and community.",
+        "Please sign and return a copy of this letter by August 12, 2024 to confirm that "
+        "you accept the position. We are glad to have you join our staff for the coming "
+        "school year.",
         y,
         size=9.5,
         leading=12,
@@ -181,29 +169,32 @@ def build_pdf(path: str) -> None:
     c.setFont("Helvetica", 10)
     c.setFillColor(TEXT)
     c.drawString(margin_x, y, "Sincerely,")
-    y -= 28
-    c.setFont("Helvetica-Oblique", 10)
-    c.drawString(margin_x, y, "_______________________________")
-    y -= 12
+    y -= 36
+    c.setFont("Times-Italic", 12)
+    c.setFillColor(TEXT)
+    c.drawString(margin_x, y, "Angelica Casta")
+    y -= 14
     c.setFont("Helvetica-Bold", 10)
-    c.drawString(margin_x, y, "Head of School")
-    y -= 11
+    c.drawString(margin_x, y, "Angelica Casta")
+    y -= 12
     c.setFont("Helvetica", 9)
     c.setFillColor(MUTED)
-    c.drawString(margin_x, y, "Facilitie De Montessori School • Orlando, Florida")
+    c.drawString(margin_x, y, "Head of School")
+    y -= 11
+    c.drawString(margin_x, y, "Facilitie De Montessori School, Orlando, Florida")
 
-    y -= 16
+    y -= 18
     c.setStrokeColor(NAVY)
     c.setLineWidth(0.55)
     c.line(margin_x, y, width - margin_x, y)
-    y -= 13
+    y -= 14
     c.setFont("Helvetica-Bold", 9.5)
     c.setFillColor(NAVY)
     c.drawString(margin_x, y, "Acceptance of Appointment")
     y -= 12
     y = draw_para(
-        "I, Prabhjot Singh, hereby accept the appointment of Science Teacher at "
-        "Facilitie De Montessori School, Orlando, under the terms stated in this letter.",
+        "I, Prabhjot Singh, accept the appointment of Science Teacher at Facilitie De "
+        "Montessori School, Orlando, on the terms stated in this letter.",
         y,
         size=9,
         leading=11.5,
@@ -223,18 +214,20 @@ def build_pdf(path: str) -> None:
     c.setFont("Helvetica", 7.2)
     c.setFillColor(MUTED)
     c.drawCentredString(
-        width / 2,
-        0.32 * inch,
-        "Facilitie De Montessori School  •  Orlando, Florida  •  Official Appointment Correspondence",
+        width / 2, 0.32 * inch, "Facilitie De Montessori School  |  Orlando, Florida"
     )
     c.drawCentredString(width / 2, 0.20 * inch, "Page 1 of 1")
     c.save()
 
 
 if __name__ == "__main__":
-    out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(
-        os.path.dirname(__file__),
-        "Facilitie_De_Montessori_Science_Teacher_Appointment_Prabhjot_Singh.pdf",
+    out = (
+        sys.argv[1]
+        if len(sys.argv) > 1
+        else os.path.join(
+            os.path.dirname(__file__),
+            "Facilitie_De_Montessori_Science_Teacher_Appointment_Prabhjot_Singh.pdf",
+        )
     )
     os.makedirs(os.path.dirname(os.path.abspath(out)) or ".", exist_ok=True)
     build_pdf(out)
